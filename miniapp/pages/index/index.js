@@ -1,52 +1,89 @@
-// index.js
-const defaultAvatarUrl = 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0'
+const SETTINGS_KEY = "word_app_settings";
+const PROGRESS_KEY = "word_app_progress_today";
 
-Component({
+Page({
   data: {
-    motto: 'Hello World',
-    userInfo: {
-      avatarUrl: defaultAvatarUrl,
-      nickName: '',
-    },
-    hasUserInfo: false,
-    canIUseGetUserProfile: wx.canIUse('getUserProfile'),
-    canIUseNicknameComp: wx.canIUse('input.type.nickname'),
+    username: "",
+    currentBookName: "",
+    dailyTarget: 20,
+    completedToday: 0,
+    progressPercent: 0
   },
-  methods: {
-    // 事件处理函数
-    bindViewTap() {
-      wx.navigateTo({
-        url: '../logs/logs'
-      })
-    },
-    onChooseAvatar(e) {
-      const { avatarUrl } = e.detail
-      const { nickName } = this.data.userInfo
+
+  onShow() {
+    // 每次回到首页都刷新一下
+    this.loadSettings();
+    this.loadTodayProgress();
+  },
+
+  loadSettings() {
+    try {
+      const settings = wx.getStorageSync(SETTINGS_KEY) || {};
       this.setData({
-        "userInfo.avatarUrl": avatarUrl,
-        hasUserInfo: nickName && avatarUrl && avatarUrl !== defaultAvatarUrl,
-      })
-    },
-    onInputChange(e) {
-      const nickName = e.detail.value
-      const { avatarUrl } = this.data.userInfo
+        username: settings.username || "",
+        currentBookName: settings.currentBookName || "",
+        dailyTarget: settings.dailyTarget || 20
+      });
+    } catch (e) {
+      console.warn("load settings error", e);
+    }
+  },
+
+  // 这里先用假数据，后面接学习页真实完成数量
+  loadTodayProgress() {
+    try {
+      const prog = wx.getStorageSync(PROGRESS_KEY) || {};
+      const completedToday = prog.completedToday || 0;
+      const dailyTarget = this.data.dailyTarget || 1;
+      const percent = dailyTarget > 0
+        ? Math.min(100, Math.round((completedToday / dailyTarget) * 100))
+        : 0;
+
       this.setData({
-        "userInfo.nickName": nickName,
-        hasUserInfo: nickName && avatarUrl && avatarUrl !== defaultAvatarUrl,
-      })
-    },
-    getUserProfile(e) {
-      // 推荐使用wx.getUserProfile获取用户信息，开发者每次通过该接口获取用户个人信息均需用户确认，开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
-      wx.getUserProfile({
-        desc: '展示用户信息', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
+        completedToday,
+        progressPercent: percent
+      });
+    } catch (e) {
+      console.warn("load progress error", e);
+      this.setData({
+        completedToday: 0,
+        progressPercent: 0
+      });
+    }
+  },
+
+  // 开始学习
+  onStartStudy() {
+    if (!this.data.currentBookName) {
+      wx.showModal({
+        title: "提示",
+        content: "还没有选择词书，请先到设置页选择词书。",
+        confirmText: "去设置",
         success: (res) => {
-          console.log(res)
-          this.setData({
-            userInfo: res.userInfo,
-            hasUserInfo: true
-          })
+          if (res.confirm) {
+            this.onGoSettings();
+          }
         }
-      })
-    },
+      });
+      return;
+    }
+
+    wx.navigateTo({
+      url: "/pages/learn/index?mode=today"
+    });
   },
-})
+
+  // 跳转错词本
+  onGoWrongList() {
+    wx.navigateTo({
+      url: "/pages/wrong-list/index"
+    });
+  },
+
+  // 跳转设置页
+  onGoSettings() {
+    wx.navigateTo({
+      url: "/pages/settings/index"
+    });
+  }
+});

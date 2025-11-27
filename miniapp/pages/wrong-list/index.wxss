@@ -1,0 +1,56 @@
+/* pages/wrong-list/index.wxss */
+
+.page {
+  /* 原来大概率是 0 或很小 */
+  padding-top: 140rpx;   /* 或者 160rpx，看效果再微调 */
+  padding-left: 24rpx;
+  padding-right: 24rpx;
+  padding-bottom: 50rpx;
+  background: #f5f6f7;
+  box-sizing: border-box;
+  min-height: 100vh;
+}
+
+.word-row {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 16rpx;
+}
+
+/* 删除按钮：底层，右侧圆角 */
+.delete-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 140rpx;                    /* 按钮宽度 */
+  height: 100%;
+  background: #ff4d4f;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 28rpx;
+  border-radius: 0 16rpx 16rpx 0;    /* 右侧圆角 */
+  z-index: 1;                        /* 默认在下层 */
+}
+
+/* 内容卡片：默认盖住删除按钮 */
+.word-card {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 16rpx;
+  padding: 20rpx 24rpx 18rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.03);
+  transform: translateX(0);
+  transition: transform 0.18s ease-out;
+  position: relative;
+  z-index: 2;                        /* 默认在上层 */
+}
+
+/* 左滑时：卡片左移，让出 140rpx 空间，并把卡片层级降低 */
+.word-card.move-left {
+  transform: translateX(-140rpx);    /* 和 .delete-btn 的 width 一致 */
+  z-index: 0;                        /* 让删除按钮盖在上面 */
+}
+
+

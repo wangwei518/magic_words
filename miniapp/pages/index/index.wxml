@@ -1,28 +1,46 @@
-<!--index.wxml-->
-<navigation-bar title="Weixin" back="{{false}}" color="black" background="#FFF"></navigation-bar>
-<scroll-view class="scrollarea" scroll-y type="list">
-  <view class="container">
-    <view class="userinfo">
-      <block wx:if="{{canIUseNicknameComp && !hasUserInfo}}">
-        <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
-          <image class="avatar" src="{{userInfo.avatarUrl}}"></image>
-        </button>
-        <view class="nickname-wrapper">
-          <text class="nickname-label">昵称</text>
-          <input type="nickname" class="nickname-input" placeholder="请输入昵称" bind:change="onInputChange" />
-        </view>
-      </block>
-      <block wx:elif="{{!hasUserInfo}}">
-        <button wx:if="{{canIUseGetUserProfile}}" bindtap="getUserProfile"> 获取头像昵称 </button>
-        <view wx:else> 请使用2.10.4及以上版本基础库 </view>
-      </block>
-      <block wx:else>
-        <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-        <text class="userinfo-nickname">{{userInfo.nickName}}</text>
-      </block>
+<view class="page">
+
+  <!-- 问候 + 今日进度 -->
+  <view class="card">
+    <view class="row-between">
+      <text class="hello-text">
+        你好，{{username || '同学'}}
+      </text>
+      <text class="small-text">
+        今日 {{completedToday}} / {{dailyTarget}}
+      </text>
     </view>
-    <view class="usermotto">
-      <text class="user-motto">{{motto}}</text>
+
+    <view class="progress-bar">
+      <view class="progress-inner" style="width: {{progressPercent}}%;"></view>
+      <view class="progress-text">{{progressPercent}}%</view>
     </view>
   </view>
-</scroll-view>
+
+  <!-- 当前词书 -->
+  <view class="card row-between">
+    <view>
+      <view class="label">当前词书</view>
+      <view class="book-name">
+        {{currentBookName || '尚未选择词书'}}
+      </view>
+    </view>
+    <button class="mini-btn" size="mini" bindtap="onGoSettings">
+      去设置
+    </button>
+  </view>
+
+  <!-- 主操作按钮区 -->
+  <view class="main-btn-group">
+    <button class="btn-primary" bindtap="onStartStudy">
+      开始学习
+    </button>
+    <button class="btn-secondary" bindtap="onGoWrongList">
+      错词本
+    </button>
+    <button class="btn-secondary" bindtap="onGoSettings">
+      设置
+    </button>
+  </view>
+
+</view>

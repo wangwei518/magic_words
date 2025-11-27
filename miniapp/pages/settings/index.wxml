@@ -1,0 +1,72 @@
+<view class="page">
+
+<!-- 用户名：左文字右内容，单行显示 -->
+<view class="card row-between">
+  <text class="row-label">用户名</text>
+  <text class="row-value">{{username || '微信用户'}}</text>
+</view>
+
+
+  <!-- 词书选择（去掉“请选择词书”的占位文案） -->
+  <view class="card row" bindtap="onChooseBook">
+    <view class="label">词书选择</view>
+    <view class="value">
+      <text class="value-text">{{currentBookName}}</text>
+      <text class="arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 每日单词数 -->
+  <view class="card">
+    <view class="label">每日单词数</view>
+    <slider
+      value="{{dailyTarget}}"
+      min="{{dailyMin}}"
+      max="{{dailyMax}}"
+      step="1"
+      bindchange="onDailyTargetChange"
+      show-value="true"
+    />
+  </view>
+
+  <!-- 发音设置 -->
+  <view class="card">
+    <view class="label">发音设置</view>
+
+    <view class="segment">
+      <view
+        class="seg-item {{accent === 'en' ? 'active' : ''}}"
+        bindtap="onAccentChange"
+        data-accent="en"
+      >
+        英音
+      </view>
+
+      <view
+        class="seg-item {{accent === 'us' ? 'active' : ''}}"
+        bindtap="onAccentChange"
+        data-accent="us"
+      >
+        美音
+      </view>
+    </view>
+
+    <view class="row-between">
+      <text class="row-label">自动播放</text>
+      <switch checked="{{autoPlay}}" bindchange="onAutoPlayChange" />
+    </view>
+  </view>
+
+<!-- 错词重做：左文字右开关，字号与“自动播放”一致 -->
+<view class="card">
+  <view class="row-between">
+    <text class="row-label">答对后自动从错词本移除</text>
+    <switch
+      checked="{{autoClearWrongAfterRedo}}"
+      bindchange="onAutoClearChange"
+    />
+  </view>
+</view>
+
+
+</view>

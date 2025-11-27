@@ -1,63 +1,46 @@
-/**index.wxss**/
-page {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
+<view class="page">
 
-.scrollarea {
-  flex: 1;
-  overflow-y: hidden;
-}
+  <!-- 问候 + 今日进度 -->
+  <view class="card">
+    <view class="row-between">
+      <text class="hello-text">
+        你好，{{username || '同学'}}
+      </text>
+      <text class="small-text">
+        今日 {{completedToday}} / {{dailyTarget}}
+      </text>
+    </view>
 
-.userinfo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: #aaa;
-  width: 80%;
-}
+    <view class="progress-bar">
+      <view class="progress-inner" style="width: {{progressPercent}}%;"></view>
+      <view class="progress-text">{{progressPercent}}%</view>
+    </view>
+  </view>
 
-.userinfo-avatar {
-  overflow: hidden;
-  width: 128rpx;
-  height: 128rpx;
-  margin: 20rpx;
-  border-radius: 50%;
-}
+  <!-- 当前词书 -->
+  <view class="card row-between">
+    <view>
+      <view class="label">当前词书</view>
+      <view class="book-name">
+        {{currentBookName || '尚未选择词书'}}
+      </view>
+    </view>
+    <button class="mini-btn" size="mini" bindtap="onGoSettings">
+      去设置
+    </button>
+  </view>
 
-.usermotto {
-  margin-top: 200px;
-}
+  <!-- 主操作按钮区 -->
+  <view class="main-btn-group">
+    <button class="btn-primary" bindtap="onStartStudy">
+      开始学习
+    </button>
+    <button class="btn-secondary" bindtap="onGoWrongList">
+      错词本
+    </button>
+    <button class="btn-secondary" bindtap="onGoSettings">
+      设置
+    </button>
+  </view>
 
-.avatar-wrapper {
-  padding: 0;
-  width: 56px !important;
-  border-radius: 8px;
-  margin-top: 40px;
-  margin-bottom: 40px;
-}
-
-.avatar {
-  display: block;
-  width: 56px;
-  height: 56px;
-}
-
-.nickname-wrapper {
-  display: flex;
-  width: 100%;
-  padding: 16px;
-  box-sizing: border-box;
-  border-top: .5px solid rgba(0, 0, 0, 0.1);
-  border-bottom: .5px solid rgba(0, 0, 0, 0.1);
-  color: black;
-}
-
-.nickname-label {
-  width: 105px;
-}
-
-.nickname-input {
-  flex: 1;
-}
+</view>

@@ -1,9 +1,13 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/logs/logs"
+    "pages/learn/index",
+    "pages/wrong-list/index",
+    "pages/settings/index",
+    "pages/finish/index"
   ],
   "window": {
+    "navigationBarTitleText": "懒得背单词",
     "navigationBarTextStyle": "black",
     "navigationStyle": "custom"
   },
